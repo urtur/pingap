@@ -475,6 +475,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "cargo-list"
+version = "0.25.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9e667ef12d1c4f5a5c57fa9fe24172ad35819300960d902c4fa777af96ba93da"
+dependencies = [
+ "anyhow",
+ "clap 4.5.9",
+ "expanduser",
+ "indexmap 2.2.6",
+ "pager",
+ "rayon",
+ "regex",
+ "reqwest 0.12.5",
+ "semver",
+ "serde",
+ "serde_json",
+ "spinners",
+ "sprint",
+ "veg",
+]
+
+[[package]]
 name = "cast"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1567,7 +1589,24 @@ dependencies = [
  "rustls 0.21.12",
  "rustls-native-certs",
  "tokio",
- "tokio-rustls",
+ "tokio-rustls 0.24.1",
+]
+
+[[package]]
+name = "hyper-rustls"
+version = "0.27.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5ee4be2c948921a1a5320b629c4193916ed787a7f7f293fd3f7f5a6c9de74155"
+dependencies = [
+ "futures-util",
+ "http 1.1.0",
+ "hyper 1.4.1",
+ "hyper-util",
+ "rustls 0.23.11",
+ "rustls-pki-types",
+ "tokio",
+ "tokio-rustls 0.26.0",
+ "tower-service",
 ]
 
 [[package]]
@@ -3846,6 +3885,30 @@ name = "spin"
 version = "0.9.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6980e8d7511241f8acf4aebddbb1ff938df5eebe98691418c4468d0b72a96a67"
+
+[[package]]
+name = "spinners"
+version = "4.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a0ef947f358b9c238923f764c72a4a9d42f2d637c46e059dbd319d6e7cfb4f82"
+dependencies = [
+ "lazy_static",
+ "maplit",
+ "strum 0.24.1",
+]
+
+[[package]]
+name = "sprint"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c68ef92f7015987ac77d3903b925b843b5ceb456d2e06c8e082755e122b234d0"
+dependencies = [
+ "anyhow",
+ "bunt",
+ "clap 4.5.9",
+ "rayon",
+ "shlex",
+]
 
 [[package]]
 name = "stable_deref_trait"
