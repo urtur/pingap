@@ -36,6 +36,7 @@ mod jwt;
 mod key_auth;
 mod limit;
 mod mock;
+mod owasp_crs_plugin;
 mod ping;
 mod redirect;
 mod referer_restriction;
@@ -225,6 +226,11 @@ pub fn parse_plugins(confs: Vec<(String, PluginConf)>) -> Result<Plugins> {
             PluginCategory::Cors => {
                 let cors = cors::Cors::new(conf)?;
                 plguins.insert(name.clone(), Box::new(cors));
+            },
+            PluginCategory::OwaspCrsPlugin => {
+                let owasp_crs_plugin =
+                    owasp_crs_plugin::OwaspCrsPlugin::new(conf)?;
+                plguins.insert(name.clone(), Box::new(owasp_crs_plugin));
             },
         };
     }

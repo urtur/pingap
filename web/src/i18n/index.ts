@@ -4,6 +4,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 
 import zh from "./zh";
 import en from "./en";
+import ru from "./ru";
 
 i18n
   .use(LanguageDetector)
@@ -19,6 +20,9 @@ i18n
       },
       zh: {
         translation: zh,
+      },
+      ru: {
+        translation: ru,
       },
     },
   });

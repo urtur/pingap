@@ -63,6 +63,7 @@ pub enum PluginCategory {
     RefererRestriction,
     Csrf,
     Cors,
+    OwaspCrsPlugin,
 }
 
 impl Serialize for PluginCategory {

@@ -20,12 +20,10 @@ write_timeout = "10s"
 tcp_idle = "2m"
 tcp_interval = "1m"
 tcp_probe_count = 100
-tcp_recv_buf = "4kb"
-
+tcp_recv_buf = "4.0 KB"
 
 [upstreams.diving]
 addrs = ["127.0.0.1:5001"]
-
 
 [locations.lo]
 upstream = "charts"
@@ -34,7 +32,7 @@ host = ""
 proxy_set_headers = ["name:value"]
 proxy_add_headers = ["name:value"]
 rewrite = ""
-plugins = ["pingap:requestId", "stats"]
+plugins = ["owasp"]
 
 [servers.test]
 addr = "0.0.0.0:6188"
@@ -43,8 +41,14 @@ locations = ["lo"]
 tcp_idle = "2m"
 tcp_interval = "1m"
 tcp_probe_count = 100
-# tcp_fast_open = 10
 
 [plugins.stats]
-value = "/stats"
 category = "stats"
+value = "/stats"
+
+[plugins.owasp]
+category = "owasp_crs_plugin"
+message = "Testovoe soobshenie ob oshike"
+path = "test"
+
+[certificates]

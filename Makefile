@@ -14,10 +14,10 @@ bench:
 	cargo bench
 
 dev:
-	RUST_LOG=INFO cargo watch -w src -x 'run -- -c=~/github/pingap/conf/pingap.toml'
+	RUST_LOG=INFO cargo watch -w src -x 'run -- -c=conf/pingap.toml'
 
 devtest:
-	RUST_LOG=INFO cargo watch -w src -x 'run -- -c=~/tmp/pingap --admin=127.0.0.1:3018'
+	RUST_LOG=DEBUG cargo watch -w src -x 'run -- -c=/Users/urtur/.yandex.disk/80473/Yandex.Disk.localized/waf/pingap/conf/pingap.toml --admin=127.0.0.1:3018'
 
 devetcd:
 	RUST_LOG=INFO cargo watch -w src -x 'run -- -c="etcd://127.0.0.1:2379/pingap?timeout=10s&connect_timeout=5s&user=pingap&password=123123" --admin=127.0.0.1:3018'

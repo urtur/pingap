@@ -33,6 +33,7 @@ export enum PluginCategory {
   REFERER_RESTRICTION = "referer_restriction",
   CSRF = "csrf",
   CORS = "cors",
+  OWASP_CRS_PLUGIN = "owasp_crs_plugin",
 }
 
 export function getPluginSteps(category: string) {
@@ -73,6 +74,7 @@ export function getPluginSteps(category: string) {
   pluginSupportSteps[PluginCategory.REFERER_RESTRICTION] = [0, 1];
   pluginSupportSteps[PluginCategory.CSRF] = [0];
   pluginSupportSteps[PluginCategory.CORS] = [0, 1];
+  pluginSupportSteps[PluginCategory.OWASP_CRS_PLUGIN] = [0, 1];
 
   const steps = pluginSupportSteps[category];
   if (steps) {
@@ -563,6 +565,18 @@ export function FormPluginField({
         span: 12,
         required: true,
       });
+      break;
+    }
+    case PluginCategory.OWASP_CRS_PLUGIN: {
+      fields.push(
+        {
+          category: "text",
+          key: "message",
+          label: t("form.ipRestrictionMessage"),
+          id: "ip-restriction-message",
+          span: 12,
+        },
+      );
       break;
     }
     case PluginCategory.MOCK: {

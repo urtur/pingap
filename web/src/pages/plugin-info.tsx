@@ -56,6 +56,9 @@ export default function ProxyPluginInfo() {
     PluginCategory.CSRF,
     PluginCategory.CORS,
 
+    // WAF
+    PluginCategory.OWASP_CRS_PLUGIN,
+
     // response
     PluginCategory.RESPONSE_HEADERS,
   ];
