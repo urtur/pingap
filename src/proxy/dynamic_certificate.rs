@@ -44,15 +44,22 @@ const E5: &[u8] = include_bytes!("../assets/e5.pem");
 const R10: &[u8] = include_bytes!("../assets/r10.pem");
 const R11: &[u8] = include_bytes!("../assets/r11.pem");
 
-// TODO not after validate
+fn parse_chain_certificate(data: &[u8]) -> Option<X509> {
+    if let Ok(info) = get_certificate_info(data) {
+        if info.not_after > util::now().as_secs() as i64 {
+            return X509::from_pem(E5).ok();
+        }
+    }
+    None
+}
 static E5_CERTIFICATE: Lazy<Option<X509>> =
-    Lazy::new(|| X509::from_pem(E5).ok());
+    Lazy::new(|| parse_chain_certificate(E5));
 static E6_CERTIFICATE: Lazy<Option<X509>> =
-    Lazy::new(|| X509::from_pem(E6).ok());
+    Lazy::new(|| parse_chain_certificate(E6));
 static R10_CERTIFICATE: Lazy<Option<X509>> =
-    Lazy::new(|| X509::from_pem(R10).ok());
+    Lazy::new(|| parse_chain_certificate(R10));
 static R11_CERTIFICATE: Lazy<Option<X509>> =
-    Lazy::new(|| X509::from_pem(R11).ok());
+    Lazy::new(|| parse_chain_certificate(R11));
 
 static LETS_ENCRYPT: &str = "lets_encrypt";
 
@@ -305,7 +312,9 @@ impl pingora::listeners::TlsAccept for DynamicCertificate {
             ssl_certificate(ssl, cert, key, &self.chain_certificate);
             return;
         }
-        let Some(sni) = ssl.servername(NameType::HOST_NAME) else {
+        let server_name = ssl.servername(NameType::HOST_NAME);
+        debug!(server_name = format!("{server_name:?}"));
+        let Some(sni) = server_name else {
             error!(ssl = format!("{ssl:?}"), "get server name fail");
             return;
         };

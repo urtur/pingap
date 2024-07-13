@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::util;
 use crate::util::format_duration;
+use crate::{proxy::Location, util};
 use bytes::{Bytes, BytesMut};
 use http::StatusCode;
 use pingora_limits::inflight::Guard;
-use std::time::Duration;
+use std::{sync::Arc, time::Duration};
 
 pub trait ModifyResponseBody: Sync + Send {
     fn handle(&self, data: Bytes) -> Bytes;
@@ -36,17 +36,32 @@ impl CompressionStat {
 }
 
 pub struct State {
+    // current processing request
     pub processing: i32,
+    // accepted request
     pub accepted: u64,
+    // current location processing request
     pub location_processing: i32,
+    // current location accepted request
     pub location_accepted: u64,
+    // context created at
     pub created_at: u64,
+    // client tls version
     pub tls_version: Option<String>,
+    // client tls cipher
+    pub tls_cipher: Option<String>,
+    // client tls handshake time
+    pub tls_handshake_time: Option<u64>,
+    // http status code
     pub status: Option<StatusCode>,
+    // the connection time,
+    // it may be a large value if it is a reused connection
     pub connection_time: u64,
-    pub response_body_size: usize,
-    pub reused: bool,
-    pub location: String,
+    // connection is resued
+    pub connection_reused: bool,
+    // the location to handle request
+    pub location: Option<Arc<Location>>,
+    // the upstream address
     pub upstream_address: String,
     pub client_ip: Option<String>,
     pub remote_addr: Option<String>,
@@ -56,11 +71,23 @@ pub struct State {
     pub cache_lookup_time: Option<u64>,
     pub cache_lock_time: Option<u64>,
     pub cache_max_ttl: Option<Duration>,
+    pub upstream_reused: bool,
+    // upstream connect time
+    // it may be a small value if it is a reused connection
     pub upstream_connect_time: Option<u64>,
+    // current upstream connected connection count
     pub upstream_connected: Option<u32>,
+    // upstream tcp connect time
+    pub upstream_tcp_connect_time: Option<u64>,
+    // upstream tls handshake time
+    pub upstream_tls_handshake_time: Option<u64>,
+    // upstream server processing time
     pub upstream_processing_time: Option<u64>,
+    // upstream response time
     pub upstream_response_time: Option<u64>,
+    // client payload size
     pub payload_size: usize,
+    // compression stat, in/out bytes and compression duration
     pub compression_stat: Option<CompressionStat>,
     pub modify_response_body: Option<Box<dyn ModifyResponseBody>>,
     pub response_body: Option<BytesMut>,
@@ -74,12 +101,14 @@ impl Default for State {
             location_processing: 0,
             location_accepted: 0,
             tls_version: None,
+            tls_cipher: None,
+            tls_handshake_time: None,
             status: None,
             connection_time: 0,
+            connection_reused: false,
             created_at: util::now().as_millis() as u64,
-            response_body_size: 0,
-            reused: false,
-            location: "".to_string(),
+            upstream_reused: false,
+            location: None,
             upstream_address: "".to_string(),
             client_ip: None,
             remote_addr: None,
@@ -91,6 +120,8 @@ impl Default for State {
             cache_max_ttl: None,
             upstream_connect_time: None,
             upstream_connected: None,
+            upstream_tcp_connect_time: None,
+            upstream_tls_handshake_time: None,
             upstream_processing_time: None,
             upstream_response_time: None,
             payload_size: 0,
@@ -134,8 +165,8 @@ impl State {
     #[inline]
     pub fn append_value(&self, mut buf: BytesMut, key: &str) -> BytesMut {
         match key {
-            "reused" => {
-                if self.reused {
+            "upstream_reused" => {
+                if self.upstream_reused {
                     buf.extend(b"true");
                 } else {
                     buf.extend(b"false");
@@ -164,13 +195,44 @@ impl State {
                     buf = format_duration(buf, ms);
                 }
             },
-            "location" => buf.extend(self.location.as_bytes()),
+            "upstream_tcp_connect_time" => {
+                if let Some(ms) = self.upstream_tcp_connect_time {
+                    buf = format_duration(buf, ms);
+                }
+            },
+            "upstream_tls_handshake_time" => {
+                if let Some(ms) = self.upstream_tls_handshake_time {
+                    buf = format_duration(buf, ms);
+                }
+            },
+            "location" => {
+                if let Some(location) = &self.location {
+                    buf.extend(location.name.as_bytes())
+                }
+            },
             "connection_time" => {
                 buf = format_duration(buf, self.connection_time)
+            },
+            "connection_reused" => {
+                if self.connection_reused {
+                    buf.extend(b"true");
+                } else {
+                    buf.extend(b"false");
+                }
             },
             "tls_version" => {
                 if let Some(value) = &self.tls_version {
                     buf.extend(value.as_bytes());
+                }
+            },
+            "tls_cipher" => {
+                if let Some(value) = &self.tls_cipher {
+                    buf.extend(value.as_bytes());
+                }
+            },
+            "tls_handshake_time" => {
+                if let Some(value) = self.tls_handshake_time {
+                    buf = format_duration(buf, value);
                 }
             },
             "compression_time" => {
@@ -209,10 +271,13 @@ impl State {
 #[cfg(test)]
 mod tests {
     use super::State;
+    use crate::config::LocationConf;
+    use crate::proxy::Location;
     use crate::state::CompressionStat;
     use crate::util;
     use bytes::BytesMut;
     use pretty_assertions::assert_eq;
+    use std::sync::Arc;
     use std::time::Duration;
 
     #[test]
@@ -223,13 +288,15 @@ mod tests {
 
         assert_eq!(
             b"false",
-            ctx.append_value(BytesMut::new(), "reused").as_ref()
+            ctx.append_value(BytesMut::new(), "upstream_reused")
+                .as_ref()
         );
 
-        ctx.reused = true;
+        ctx.upstream_reused = true;
         assert_eq!(
             b"true",
-            ctx.append_value(BytesMut::new(), "reused").as_ref()
+            ctx.append_value(BytesMut::new(), "upstream_reused")
+                .as_ref()
         );
 
         ctx.upstream_address = "192.168.1.1:80".to_string();
@@ -272,7 +339,28 @@ mod tests {
                 .as_ref()
         );
 
-        ctx.location = "pingap".to_string();
+        ctx.upstream_tcp_connect_time = Some(100);
+        assert_eq!(
+            b"100ms",
+            ctx.append_value(BytesMut::new(), "upstream_tcp_connect_time")
+                .as_ref()
+        );
+        ctx.upstream_tls_handshake_time = Some(110);
+        assert_eq!(
+            b"110ms",
+            ctx.append_value(BytesMut::new(), "upstream_tls_handshake_time")
+                .as_ref()
+        );
+
+        ctx.location = Some(Arc::new(
+            Location::new(
+                "pingap",
+                &LocationConf {
+                    ..Default::default()
+                },
+            )
+            .unwrap(),
+        ));
         assert_eq!(
             b"pingap",
             ctx.append_value(BytesMut::new(), "location").as_ref()
@@ -289,6 +377,13 @@ mod tests {
         assert_eq!(
             b"tls1.3",
             ctx.append_value(BytesMut::new(), "tls_version").as_ref()
+        );
+
+        ctx.tls_cipher =
+            Some("ECDHE_ECDSA_WITH_AES_128_GCM_SHA256".to_string());
+        assert_eq!(
+            b"ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+            ctx.append_value(BytesMut::new(), "tls_cipher").as_ref()
         );
 
         ctx.compression_stat = Some(CompressionStat {

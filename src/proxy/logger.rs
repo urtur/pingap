@@ -337,12 +337,12 @@ impl Parser {
                 TagCategory::Size => {
                     buf.extend(
                         itoa::Buffer::new()
-                            .format(ctx.response_body_size)
+                            .format(session.body_bytes_sent())
                             .as_bytes(),
                     );
                 },
                 TagCategory::SizeHuman => {
-                    buf = format_byte_size(buf, ctx.response_body_size);
+                    buf = format_byte_size(buf, session.body_bytes_sent());
                 },
                 TagCategory::Status => {
                     if let Some(status) = ctx.status {
@@ -412,8 +412,10 @@ impl Parser {
 
 #[cfg(test)]
 mod tests {
+    use std::sync::Arc;
+
     use super::{format_extra_tag, Parser, Tag, TagCategory};
-    use crate::state::State;
+    use crate::{config::LocationConf, proxy::Location, state::State};
     use http::Method;
     use pingora::proxy::Session;
     use pretty_assertions::assert_eq;
@@ -614,7 +616,7 @@ mod tests {
             "{host} {method} {path} {proto} {query} {remote} {client_ip} \
 {scheme} {uri} {referer} {user_agent} {size} \
 {size_human} {status} {payload_size} {payload_size_human} \
-{~deviceId} {>accept} {:reused} {:upstream_addr} \
+{~deviceId} {>accept} {:upstream_reused} {:upstream_addr} \
 {:processing} {:upstream_connect_time} {:location} \
 {:connection_time} {:tls_version} {request_id}"
                 .into();
@@ -635,12 +637,19 @@ mod tests {
         assert_eq!(Method::GET, session.req_header().method);
 
         let ctx = State {
-            response_body_size: 1100,
-            reused: true,
+            upstream_reused: true,
             upstream_address: "192.186.1.1:6188".to_string(),
             processing: 1,
             upstream_connect_time: Some(100),
-            location: "test".to_string(),
+            location: Some(Arc::new(
+                Location::new(
+                    "test",
+                    &LocationConf {
+                        ..Default::default()
+                    },
+                )
+                .unwrap(),
+            )),
             connection_time: 300,
             tls_version: Some("1.2".to_string()),
             request_id: Some("nanoid".to_string()),
@@ -648,7 +657,7 @@ mod tests {
         };
         let log = p.format(&session, &ctx);
         assert_eq!(
-            "github.com GET /vicanso/pingap HTTP/1.1 size=1   https /vicanso/pingap?size=1 https://github.com/ pingap/0.1.1 1100 1.1KB 0 0 0B abc application/json true 192.186.1.1:6188 1 100ms test 300ms 1.2 nanoid",
+            "github.com GET /vicanso/pingap HTTP/1.1 size=1   https /vicanso/pingap?size=1 https://github.com/ pingap/0.1.1 0 0B 0 0 0B abc application/json true 192.186.1.1:6188 1 100ms test 300ms 1.2 nanoid",
             log
         );
     }

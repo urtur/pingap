@@ -32,9 +32,10 @@ type BinaryMeta = (Vec<u8>, Vec<u8>);
 #[derive(Debug, Clone, Default, PartialEq)]
 pub struct CacheObject {
     pub meta: BinaryMeta,
-    pub body: Arc<Vec<u8>>,
+    pub body: Vec<u8>,
 }
 
+/// Create a cache object from bytes.
 impl From<Vec<u8>> for CacheObject {
     fn from(value: Vec<u8>) -> Self {
         let size_byte = 8;
@@ -58,10 +59,11 @@ impl From<Vec<u8>> for CacheObject {
         let body = value[start..value.len()].to_vec();
         Self {
             meta: (meta0, meta1),
-            body: Arc::new(body),
+            body,
         }
     }
 }
+/// Convert cache object to bytes.
 impl From<CacheObject> for Vec<u8> {
     fn from(value: CacheObject) -> Self {
         let mut buf = BytesMut::with_capacity(value.body.len() + 1024);
@@ -96,7 +98,7 @@ pub struct HttpCache {
 }
 
 pub struct CompleteHit {
-    body: Arc<Vec<u8>>,
+    body: Vec<u8>,
     done: bool,
     range_start: usize,
     range_end: usize,
@@ -193,14 +195,24 @@ impl HandleMiss for ObjectMissHandler {
                 self.key.clone(),
                 CacheObject {
                     meta: self.meta,
-                    body: Arc::new(self.body.to_vec()),
+                    body: self.body.to_vec(),
                 },
-                1,
+                get_wegith(size),
             )
             .await?;
 
         Ok(size)
     }
+}
+
+fn get_wegith(size: usize) -> u16 {
+    if size < 50 * 1024 {
+        return 4;
+    }
+    if size < 500 * 1024 {
+        return 2;
+    }
+    1
 }
 
 #[async_trait]
@@ -213,11 +225,12 @@ impl Storage for HttpCache {
         let hash = key.combined();
         if let Some(obj) = self.cached.get(&hash).await {
             let meta = CacheMeta::deserialize(&obj.meta.0, &obj.meta.1)?;
+            let size = obj.body.len();
             let hit_handler = CompleteHit {
-                body: obj.body.clone(),
+                body: obj.body,
                 done: false,
                 range_start: 0,
-                range_end: obj.body.len(),
+                range_end: size,
             };
             Ok(Some((meta, Box::new(hit_handler))))
         } else {
@@ -261,8 +274,8 @@ impl Storage for HttpCache {
         _type: PurgeType,
         _trace: &SpanHandle,
     ) -> pingora::Result<bool> {
-        // This usually purges the primary key because, without a lookup, the variance key is usually
-        // empty
+        // This usually purges the primary key because, without a lookup,
+        // the variance key is usually empty
         let hash = key.combined();
         let cache_removed = if let Ok(result) = self.cached.remove(&hash).await
         {
@@ -282,7 +295,8 @@ impl Storage for HttpCache {
         let hash = key.combined();
         if let Some(mut obj) = self.cached.get(&hash).await {
             obj.meta = meta.serialize()?;
-            let _ = self.cached.put(hash, obj, 1).await?;
+            let size = obj.body.len();
+            let _ = self.cached.put(hash, obj, get_wegith(size)).await?;
             Ok(true)
         } else {
             Err(Error::Invalid {
@@ -312,7 +326,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_complete_hit() {
-        let body = Arc::new(b"Hello World!".to_vec());
+        let body = b"Hello World!".to_vec();
         let size = body.len();
         let hit = CompleteHit {
             body,
