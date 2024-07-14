@@ -7,6 +7,7 @@ use async_trait::async_trait;
 use bytes::Bytes;
 use http::StatusCode;
 use pingora::proxy::Session;
+use regex::Replacer;
 use tracing::{debug, info};
 
 pub struct OwaspCrsPlugin {
@@ -74,15 +75,24 @@ impl Plugin for OwaspCrsPlugin {
 
         let req_header = session.req_header();
         let headers = &req_header.headers;
+        let mut message = String::from("");
+        message.push_str("<html><head></head><body>");
+        message.push_str("<h1>Request Headers</h1>");
         for (i, n) in headers.into_iter().enumerate() {
             let hn = &n.0.as_str();
             let hv = &n.1.to_str().unwrap();
+            message.push_str(&(i+1).to_string());
+            message.push_str(". ");
+            message.push_str(hn);
+            message.push_str(" = ");
+            message.push_str(hv);
+            message.push_str("<br>");
             info!("{hn} {hv}");
         }
-        //let message = String::from("");
+        message.push_str("</body></html>");
 
         let mut forbidden_resp = self.forbidden_resp.clone();
-        //forbidden_resp.body = message.into();
+        forbidden_resp.body = message.into();
 
         let allow = false;
         if !allow {
