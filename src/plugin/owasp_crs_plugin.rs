@@ -85,7 +85,7 @@ impl Plugin for OwaspCrsPlugin {
             message.push_str(&(i+1).to_string());
             message.push_str(". ");
             message.push_str(hn);
-            message.push_str(" = "z);
+            message.push_str(" = ");
             message.push_str(hv);
             message.push_str("<br>");
             info!("{hn} {hv}");
