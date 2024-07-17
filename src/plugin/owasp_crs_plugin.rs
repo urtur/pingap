@@ -2,12 +2,10 @@ use super::{get_step_conf, get_str_conf, Error, Plugin, Result};
 use crate::config::{PluginCategory, PluginConf, PluginStep};
 use crate::http_extra::HttpResponse;
 use crate::state::State;
-use crate::util;
 use async_trait::async_trait;
 use bytes::Bytes;
 use http::StatusCode;
 use pingora::proxy::Session;
-use regex::Replacer;
 use tracing::{debug, info};
 
 pub struct OwaspCrsPlugin {
@@ -77,14 +75,17 @@ impl Plugin for OwaspCrsPlugin {
         let headers = &req_header.headers;
         let mut message = String::from("");
         message.push_str("<html><head></head><body>");
-        message.push_str("<h1>Request Headers</h1>");
+        message.push_str("<h1>Rezquest Headers</h1>");
+        message.push_str("0. uri = ");
+        message.push_str(&req_header.uri.to_string());
+        message.push_str("<br>");
         for (i, n) in headers.into_iter().enumerate() {
             let hn = &n.0.as_str();
             let hv = &n.1.to_str().unwrap();
             message.push_str(&(i+1).to_string());
             message.push_str(". ");
             message.push_str(hn);
-            message.push_str(" = ");
+            message.push_str(" = "z);
             message.push_str(hv);
             message.push_str("<br>");
             info!("{hn} {hv}");
