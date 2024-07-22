@@ -34,6 +34,7 @@ export enum PluginCategory {
   CSRF = "csrf",
   CORS = "cors",
   OWASP_CRS_PLUGIN = "owasp_crs_plugin",
+  WIREFILTER_PLUGIN = "wirefilter_plugin",
 }
 
 export function getPluginSteps(category: string) {
@@ -75,6 +76,7 @@ export function getPluginSteps(category: string) {
   pluginSupportSteps[PluginCategory.CSRF] = [0];
   pluginSupportSteps[PluginCategory.CORS] = [0, 1];
   pluginSupportSteps[PluginCategory.OWASP_CRS_PLUGIN] = [0, 1];
+  pluginSupportSteps[PluginCategory.WIREFILTER_PLUGIN] = [0, 1];
 
   const steps = pluginSupportSteps[category];
   if (steps) {
@@ -574,6 +576,26 @@ export function FormPluginField({
           key: "message",
           label: t("form.ipRestrictionMessage"),
           id: "ip-restriction-message",
+          span: 12,
+        },
+      );
+      break;
+    }
+    case PluginCategory.WIREFILTER_PLUGIN: {
+      fields.push(
+        {
+          category: "textlist",
+          key: "restriction_expression_list",
+          label: t("form.restriction_expression_list"),
+          addLabel: t("form.refererRestrictionAdd"),
+          id: "ip-restriction-list",
+          span: 12,
+        },
+        {
+          category: "text",
+          key: "message",
+          label: t("form.refererRestrictionMessage"),
+          id: "referer-restriction-message",
           span: 12,
         },
       );

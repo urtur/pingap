@@ -119,7 +119,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            vicanso/pingap
+            urtur/pingap
           tags: |
             type=raw,value=latest
       - name: Set up QEMU
@@ -173,7 +173,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            vicanso/pingap
+            urtur/pingap
           tags: |
             type=raw,value=latest
       - name: Set up QEMU
@@ -227,7 +227,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            vicanso/pingap
+            urtur/pingap
           tags: |
             type=semver,pattern={{version}}
       - name: Set up QEMU

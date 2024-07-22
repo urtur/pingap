@@ -64,6 +64,7 @@ pub enum PluginCategory {
     Csrf,
     Cors,
     OwaspCrsPlugin,
+    WirefilterPlugin,
 }
 
 impl Serialize for PluginCategory {

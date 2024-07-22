@@ -58,6 +58,7 @@ export default function ProxyPluginInfo() {
 
     // WAF
     PluginCategory.OWASP_CRS_PLUGIN,
+    PluginCategory.WIREFILTER_PLUGIN,
 
     // response
     PluginCategory.RESPONSE_HEADERS,

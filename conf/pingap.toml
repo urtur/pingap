@@ -23,16 +23,16 @@ tcp_probe_count = 100
 tcp_recv_buf = "4.0 KB"
 
 [upstreams.diving]
-addrs = ["127.0.0.1:5001"]
+addrs = ["google.com"]
 
 [locations.lo]
-upstream = "charts"
+upstream = "diving"
 path = "/"
 host = ""
 proxy_set_headers = ["name:value"]
 proxy_add_headers = ["name:value"]
 rewrite = ""
-plugins = ["owasp"]
+plugins = ["wirefilter"]
 
 [servers.test]
 addr = "0.0.0.0:6188"
@@ -42,13 +42,21 @@ tcp_idle = "2m"
 tcp_interval = "1m"
 tcp_probe_count = 100
 
-[plugins.stats]
-category = "stats"
-value = "/stats"
-
 [plugins.owasp]
 category = "owasp_crs_plugin"
 message = "Testovoe soobshenie ob oshike"
 path = "test"
+
+[plugins.stats]
+category = "stats"
+value = "/stats"
+
+[plugins.wirefilter]
+category = "wirefilter_plugin"
+message = "test message from plugin"
+restriction_expression_list = [
+    'http.request.method == "GET" ^^ http.user_agent contains "Mozilla/5.0"',
+    'http.request.method != "POST" && http.user_agent contains "Mozilla/5.0"',
+]
 
 [certificates]
