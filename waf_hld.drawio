@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36" version="24.8.3">
   <diagram name="Страница — 1" id="EpYGhv_TGqBXXWEnbxPb">
-    <mxGraphModel dx="1194" dy="755" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1257" dy="795" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -11,7 +11,7 @@
           <mxGeometry x="214" y="390" width="400" height="90" as="geometry" />
         </mxCell>
         <mxCell id="DpchlOPgr1H3XQHfYXvT-5" value="Internet/Intranet" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="21" y="120" width="120" height="360" as="geometry" />
+          <mxGeometry x="40" y="120" width="101" height="360" as="geometry" />
         </mxCell>
         <mxCell id="DpchlOPgr1H3XQHfYXvT-6" value="Protected Client resources" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="610" y="120" width="130" height="360" as="geometry" />
@@ -27,7 +27,8 @@
             <Array as="points">
               <mxPoint x="400" y="258" />
               <mxPoint x="400" y="280" />
-              <mxPoint x="338" y="280" />
+              <mxPoint x="330" y="280" />
+              <mxPoint x="330" y="258" />
             </Array>
             <mxPoint as="offset" />
           </mxGeometry>
@@ -81,12 +82,14 @@
           <mxGeometry x="220" y="90" width="300" height="30" as="geometry" />
         </mxCell>
         <mxCell id="DpchlOPgr1H3XQHfYXvT-19" value="Cliennt infrastructure" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="200" y="490" width="480" height="30" as="geometry" />
+          <mxGeometry x="214" y="480" width="300" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="DpchlOPgr1H3XQHfYXvT-24" value="log" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="DpchlOPgr1H3XQHfYXvT-22" target="DpchlOPgr1H3XQHfYXvT-10">
+        <mxCell id="DpchlOPgr1H3XQHfYXvT-24" value="log" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="DpchlOPgr1H3XQHfYXvT-10">
           <mxGeometry x="-0.8528" y="10" relative="1" as="geometry">
+            <mxPoint x="305.0000000000001" y="420.0011363636364" as="sourcePoint" />
+            <mxPoint x="414.9999999999999" y="257.98" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="310" y="280" />
+              <mxPoint x="305" y="280" />
               <mxPoint x="400" y="280" />
               <mxPoint x="400" y="258" />
             </Array>
@@ -122,7 +125,7 @@
         </mxCell>
         <mxCell id="DpchlOPgr1H3XQHfYXvT-38" value="Server response" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="DpchlOPgr1H3XQHfYXvT-31">
           <mxGeometry x="-0.0713" y="2" relative="1" as="geometry">
-            <mxPoint x="-39" y="-12" as="offset" />
+            <mxPoint x="191" y="-32" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="DpchlOPgr1H3XQHfYXvT-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;" edge="1" parent="1" source="DpchlOPgr1H3XQHfYXvT-27" target="DpchlOPgr1H3XQHfYXvT-28">
@@ -196,7 +199,7 @@
         </mxCell>
         <mxCell id="DpchlOPgr1H3XQHfYXvT-51" value="Server response" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="DpchlOPgr1H3XQHfYXvT-50">
           <mxGeometry x="-0.0713" y="2" relative="1" as="geometry">
-            <mxPoint as="offset" />
+            <mxPoint x="50" y="8" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="DpchlOPgr1H3XQHfYXvT-55" value="" style="endArrow=classic;html=1;rounded=0;exitX=0;exitY=0.166;exitDx=0;exitDy=0;strokeWidth=5;fillColor=#dae8fc;strokeColor=#6c8ebf;edgeStyle=orthogonalEdgeStyle;exitPerimeter=0;" edge="1" parent="1" target="DpchlOPgr1H3XQHfYXvT-27">
