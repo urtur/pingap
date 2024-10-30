@@ -19,7 +19,7 @@
         <mxCell id="DpchlOPgr1H3XQHfYXvT-7" value="Portals/&lt;div&gt;Information systems&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=33;textDirection=vertical-rl;" vertex="1" parent="1">
           <mxGeometry x="643.5" y="178" width="63" height="172" as="geometry" />
         </mxCell>
-        <mxCell id="DpchlOPgr1H3XQHfYXvT-8" value="Cloud WAF-as-a-Service&lt;div&gt;(Solar Cloud)&lt;/div&gt;" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="DpchlOPgr1H3XQHfYXvT-8" value="Cloud WAF-as-a-Service&lt;div&gt;(Solar Cloud)&lt;/div&gt;" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#FFB570;" vertex="1" parent="1">
           <mxGeometry x="450" y="70" width="130" height="90" as="geometry" />
         </mxCell>
         <mxCell id="DpchlOPgr1H3XQHfYXvT-25" value="config" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="DpchlOPgr1H3XQHfYXvT-10" target="DpchlOPgr1H3XQHfYXvT-16">
@@ -45,7 +45,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="DpchlOPgr1H3XQHfYXvT-10" value="Cloud mngm&lt;div&gt;&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#DD344C;strokeColor=none;dashed=0;verticalLabelPosition=top;verticalAlign=bottom;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.waf_managed_rule;labelPosition=center;" vertex="1" parent="1">
+        <mxCell id="DpchlOPgr1H3XQHfYXvT-10" value="Cloud&lt;br&gt;&lt;div&gt;mngm&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#DD344C;strokeColor=none;dashed=0;verticalLabelPosition=top;verticalAlign=bottom;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.waf_managed_rule;labelPosition=center;" vertex="1" parent="1">
           <mxGeometry x="420" y="238" width="40" height="40" as="geometry" />
         </mxCell>
         <mxCell id="DpchlOPgr1H3XQHfYXvT-12" value="worker" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;" vertex="1" parent="1">
@@ -81,7 +81,7 @@
           <mxGeometry x="320" y="178" width="30" height="30" as="geometry" />
         </mxCell>
         <mxCell id="DpchlOPgr1H3XQHfYXvT-18" value="Cloud infrastructure" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="220" y="90" width="300" height="30" as="geometry" />
+          <mxGeometry x="250" y="90" width="270" height="30" as="geometry" />
         </mxCell>
         <mxCell id="DpchlOPgr1H3XQHfYXvT-19" value="Client infrastructure" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="214" y="480" width="300" height="30" as="geometry" />
@@ -241,7 +241,7 @@
           <mxGeometry x="300" y="415" width="45" height="45" as="geometry" />
         </mxCell>
         <mxCell id="xrGxlPLcymbiyCT4T5op-1" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://rt-solar.ru/local/templates/SolarOrange/images/identity-logo-2.svg;" vertex="1" parent="1">
-          <mxGeometry x="360.65" y="120" width="99.35" height="19" as="geometry" />
+          <mxGeometry x="224.99999999999997" y="95.5" width="99.35" height="19" as="geometry" />
         </mxCell>
         <mxCell id="xrGxlPLcymbiyCT4T5op-2" value="" style="sketch=0;html=1;aspect=fixed;strokeColor=none;shadow=0;fillColor=#3B8DF1;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;shape=mxgraph.gcp2.arrows_system" vertex="1" parent="1">
           <mxGeometry x="670.5" y="182.05" width="33.63" height="31.95" as="geometry" />
@@ -278,6 +278,29 @@
         </mxCell>
         <mxCell id="xrGxlPLcymbiyCT4T5op-12" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn0.iconfinder.com/data/icons/security-double-color-red-and-black-vol-1/52/close__cancel__denied__stop-128.png" vertex="1" parent="1">
           <mxGeometry x="170" y="441" width="22" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="xrGxlPLcymbiyCT4T5op-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.13;exitY=0.77;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.989;entryY=0.08;entryDx=0;entryDy=0;entryPerimeter=0;fillColor=#f0a30a;strokeColor=#BD7000;" edge="1" parent="1" source="DpchlOPgr1H3XQHfYXvT-8" target="DpchlOPgr1H3XQHfYXvT-16">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="390" y="139" />
+              <mxPoint x="390" y="157" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="xrGxlPLcymbiyCT4T5op-21" value="orchestration" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="xrGxlPLcymbiyCT4T5op-20">
+          <mxGeometry x="-0.2698" y="2" relative="1" as="geometry">
+            <mxPoint x="6" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="xrGxlPLcymbiyCT4T5op-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fillColor=#f0a30a;strokeColor=#BD7000;exitX=0.13;exitY=0.77;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="DpchlOPgr1H3XQHfYXvT-8" target="DpchlOPgr1H3XQHfYXvT-10">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="477" y="149" as="sourcePoint" />
+            <mxPoint x="379" y="167" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="470" y="139" />
+              <mxPoint x="470" y="258" />
+            </Array>
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
