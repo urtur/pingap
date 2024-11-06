@@ -608,6 +608,9 @@
             </Array>
           </mxGeometry>
         </mxCell>
+        <mxCell id="TNEX0KiS480EHTF8kGlk-0" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="svwAI6KFjKOXpf8T63rX-1" source="svwAI6KFjKOXpf8T63rX-35" target="svwAI6KFjKOXpf8T63rX-35">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
